@@ -5,7 +5,7 @@
     <div v-if="currentRole === 'admin'" class="menu-list">
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'users' }"
+        :class="{ active: currentComponent === 'user' }"
         @click="$emit('show-component', 'users')"
       >
         <i class="fas fa-users"></i>
@@ -14,7 +14,7 @@
       
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'items' }"
+        :class="{ active: currentComponent === 'item' }"
         @click="$emit('show-component', 'items')"
       >
         <i class="fas fa-box"></i>

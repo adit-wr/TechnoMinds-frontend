@@ -1,60 +1,146 @@
 <template>
   <div id="app">
+    <!-- Header Komponen -->
     <Header 
       :current-role="currentRole"
       :is-sidebar-visible="isSidebarVisible"
+      @update-role="handleRoleUpdate"
       @toggle-sidebar="toggleSidebar"
-      @update-role="updateRole"
       @search="handleSearch"
+      @logout="handleLogout"
     />
     
+    <!-- Sidebar Komponen -->
     <Sidebar 
       :current-role="currentRole"
       :is-sidebar-visible="isSidebarVisible"
-      @show-component="showComponent"
+      @show-component="handleComponentChange"
     />
-    
-    <main :class="['main-content', { 'sidebar-visible': isSidebarVisible }]">
-      <component :is="currentComponent"></component>
+
+    <!-- Konten Utama -->
+    <main :class="{ 'content-expanded': !isSidebarVisible }">
+      <!-- Tampilkan AdminView jika role adalah admin -->
+      <AdminView 
+        v-if="currentRole === 'admin'"
+        :current-component="currentComponent"
+        :items="items"
+        :show-item-form="showItemForm"
+        :selected-item="selectedItem"
+        @update:show-item-form="showItemForm = $event"
+        @save-item="handleSaveItem"
+        @edit-item="handleEditItem"
+        @delete-item="handleDeleteItem"
+      />
+      <!-- Tampilkan UserView jika role adalah user -->
+      <UserView
+        v-if="currentRole === 'user'"
+        :current-component="currentComponent"
+        :items="items"
+      />
     </main>
 
-    <Footer @show-component="showComponent" />
+    <!-- Modal Notifikasi -->
+    <Modal 
+      v-if="showModal"
+      :modal-content="modalContent"
+      @close="closeModal"
+    />
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from './components/dashboard/Header.vue'
-import Sidebar from './components/dashboard/Sidebar.vue'
-import Footer from './components/dashboard/Footer.vue'
+import Header from '@/components/dashboard/Header.vue'
+//import Transaction from './components/user/transaction/Transaction.vue'
+//import UserList from  './components/admin/user/UserList.vue'
+//import ItemList from './components/admin/item/ItemList.vue'
+import Footer from '@/components/dashboard/Footer.vue'
+import Sidebar from '@/components/dashboard/Sidebar.vue'
+import AdminView from '@/views/AdminView.vue'
+import UserView from '@/views/UserView.vue'
+import Modal from '@/components/Modal.vue'
 
 export default {
   name: 'App',
   components: {
     Header,
+    Footer,
     Sidebar,
-    Footer
+    //UserList,
+    //ItemList,
+    AdminView,
+    UserView,
+    //Transaction,
+    Modal
   },
   data() {
     return {
       currentRole: 'user',
-      isSidebarVisible: true,
       currentComponent: 'items',
+      isSidebarVisible: true,
+      items: [
+        { code: "1", name: "Printer", description: "Ini adalah printer Canon", stock: 10 },
+        { code: "2", name: "Laptop", description: "Laptop dengan spesifikasi tinggi", stock: 10 },
+        { code: "3", name: "Charger", description: "Charger dengan fast Charging", stock: 10 },
+        { code: "4", name: "Tas Sekolah", description: "Gak tau kenapa ada tas sekolah disini", stock: 10 }
+      ],
+      showItemForm: false,
+      selectedItem: null,
+      showModal: false,
+      modalContent: { title: '', message: '', type: '' },
       searchQuery: ''
     }
   },
   methods: {
+    handleRoleUpdate(role) {
+      this.currentRole = role;
+      this.currentComponent = role === 'admin' ? 'users' : 'items';
+      console.log('Role changed to:', role);
+    },
     toggleSidebar() {
-      this.isSidebarVisible = !this.isSidebarVisible
+      this.isSidebarVisible = !this.isSidebarVisible;
+      console.log('Sidebar toggled:', this.isSidebarVisible);
     },
-    updateRole(role) {
-      this.currentRole = role
-      this.currentComponent = 'items'
+    handleComponentChange(component) {
+      this.currentComponent = component;
+      this.showItemForm = false;
+      console.log('Component changed to:', component);
     },
-    showComponent(componentName) {
-      this.currentComponent = componentName
+    handleSaveItem(item) {
+      if (this.selectedItem) {
+        const index = this.items.findIndex(i => i.code === item.code);
+        if (index !== -1) {
+          this.items.splice(index, 1, item);
+          this.showNotification('Sukses', 'Item berhasil diperbarui', 'success');
+        }
+      } else {
+        this.items.push(item);
+        this.showNotification('Sukses', 'Item berhasil ditambahkan', 'success');
+      }
+      this.showItemForm = false;
+      this.selectedItem = null;
+    },
+    handleEditItem(item) {
+      this.selectedItem = { ...item };
+      this.showItemForm = true;
+    },
+    handleDeleteItem(code) {
+      this.items = this.items.filter(item => item.code !== code);
+      this.showNotification('Sukses', 'Item berhasil dihapus', 'success');
+    },
+    showNotification(title, message, type) {
+      this.modalContent = { title, message, type };
+      this.showModal = true;
+    },
+    closeModal() {
+      this.showModal = false;
+      this.modalContent = { title: '', message: '', type: '' };
     },
     handleSearch(query) {
-      this.searchQuery = query
+      this.searchQuery = query;
+    },
+    handleLogout() {
+      console.log('Logged out');
     }
   }
 }
@@ -63,47 +149,36 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   color: #2c3e50;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
-
 .main-content {
   padding: 90px 20px 20px;
-  margin-left: 0;
-  transition: margin-left 0.3s ease;
-  min-height: calc(100vh - 70px);
   background-color: #f8f9fa;
   flex: 1;
+  transition: margin-left 0.3s ease;
 }
-
-.main-content.sidebar-visible {
+.content-expanded {
+  margin-left: 0;
+}
+.sidebar-visible {
   margin-left: 250px;
 }
-
-/* Responsive Styles */
 @media (max-width: 768px) {
   .main-content.sidebar-visible {
     margin-left: 200px;
   }
 }
-
 @media (max-width: 576px) {
   .main-content {
     padding: 90px 10px 20px;
   }
 }
-
-/* Reset default styles */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
-/* Font Awesome */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
-</style>dashboard/
+</style>

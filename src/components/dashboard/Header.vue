@@ -10,7 +10,7 @@
         </button>
         
         <!-- Logo/Brand -->
-        <h1 class="brand">Inventory App</h1>
+        <h1 class="brand">TechnoMinds</h1>
       </div>
   
       <!-- Search Bar -->
