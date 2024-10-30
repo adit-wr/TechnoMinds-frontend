@@ -47,10 +47,12 @@
   
   <style scoped>
   .footer {
+    width: 81%;
     background-color: #2c3e50;
     color: white;
     padding: 40px 0 20px;
     margin-top: auto;
+    margin-left: 19%;
   }
   
   .footer-content {
