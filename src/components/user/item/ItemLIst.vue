@@ -1,47 +1,61 @@
 <template>
     <div class="item-list">
         <div class="card">
-            <div class="header">
-                <h2>Daftar Item</h2>
+            <div class="header d-flex justify-content-between align-items-center">
+                <h2>Daftar Master Data Barang</h2>
             </div>
-        </div>
-        <div class="item-card">
-            <ItemCard 
-            v-for="item in items"
-            :key="item.id"
-            :item="item"
-            @edit-item="editItem"
-            @delete-item="deleteItem"
-            />
+            <table class="table table-bordered mt-3">
+                <thead class="table-light">
+                    <tr>
+                        <th>Nama</th>
+                        <th>Deskripsi</th>
+                        <th>Stok</th>
+                        <th>Harga</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="item in items" :key="item.id">
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.deskripsi }}</td>
+                        <td>{{ item.stok }}</td>
+                        <td>{{ item.price }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
         <Modal :visible="showForm" @close="cancelEditForm">
             <ItemForm
-            :item="selectedItem"
-            :isEdit="isEdit"
-            @submit="handleSubmit"
-            @cancel="cancelEditForm"
+                :item="selectedItem"
+                :isEdit="isEdit"
+                @submit="handleSubmit"
+                @cancel="cancelEditForm"
             />
         </Modal>
     </div>
 </template>
 
 <script>
-import ItemCard from './ItemCard.vue';
-import Modal from '@/components/Modal.vue'; 
+import Modal from '@/components/Modal.vue';
 import ItemForm from './ItemForm.vue';
 
 export default {
-    components: { 
-        ItemCard, 
+    components: {
         ItemForm,
         Modal
     },
     data() {
         return {
             items: [
-                { id: 1, name: 'Laptop', deskripsi: 'Merupakan barang elektronik', stok: 10, price: 'Rp 7.000.000' },
-                { id: 2, name: 'Meja', deskripsi: 'Merupakan alat - alat Furniture', stok: 5, price: 'Rp 1.200.000' },
-                { id: 3, name: 'Kursi', deskripsi: 'Merupakan alat-alat Furniture', stok: 2, price: 'Rp 500.000' }
+                { id: 1, name: 'Benang Poliéster', deskripsi: 'Benang berkualitas tinggi untuk menjahit', stok: 500, price: 'Rp 100.000' },
+                { id: 2, name: 'Kain Katun', deskripsi: 'Kain katun untuk pembuatan pakaian', stok: 200, price: 'Rp 250.000' },
+                { id: 3, name: 'Kain Spandex', deskripsi: 'Kain elastis untuk pakaian olahraga', stok: 150, price: 'Rp 300.000' },
+                { id: 4, name: 'Kain Satin', deskripsi: 'Kain satin untuk busana formal', stok: 100, price: 'Rp 500.000' },
+                { id: 5, name: 'Dye (Pewarna)', deskripsi: 'Pewarna tekstil untuk memberikan warna pada kain', stok: 300, price: 'Rp 50.000' },
+                { id: 6, name: 'Bahan Pelapis', deskripsi: 'Bahan untuk pelapisan kain', stok: 250, price: 'Rp 200.000' },
+                { id: 7, name: 'Furnitur Mesin Jahit', deskripsi: 'Peralatan untuk memproduksi pakaian', stok: 20, price: 'Rp 15.000.000' },
+                { id: 8, name: 'Pita Pengukur', deskripsi: 'Alat untuk mengukur ukuran kain', stok: 50, price: 'Rp 15.000' },
+                { id: 9, name: 'Benang Jahit', deskripsi: 'Benang untuk mesin jahit', stok: 1000, price: 'Rp 10.000' },
+                { id: 10, name: 'Kain Non-Woven', deskripsi: 'Kain untuk produk tas dan kemasan', stok: 150, price: 'Rp 300.000' },
             ],
             showForm: false,
             selectedItem: null,
@@ -50,7 +64,7 @@ export default {
     },
     methods: {
         showAddForm() {
-            this.selectedItem = { id: "", name: "", deskripsi: "", stok: "" };
+            this.selectedItem = { id: "", name: "", deskripsi: "", stok: "", price: "" };
             this.isEdit = false;
             this.showForm = true;
         },
@@ -66,14 +80,14 @@ export default {
                     this.items.splice(index, 1, item);
                 }
             } else {
-                item.id = Date.now(); 
+                item.id = Date.now(); // Assign unique ID for new items
                 this.items.push(item);
             }
             this.showForm = false;
             this.selectedItem = null;
             this.isEdit = false;
         },
-        cancelEditForm() { // Nama metode diperbaiki
+        cancelEditForm() {
             this.showForm = false;
             this.isEdit = false;
             this.selectedItem = null;
@@ -96,28 +110,25 @@ export default {
 }
 
 .header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
     margin-bottom: 20px;
 }
 
-h2 {
-    color: black;
-    font-weight: bold;
-}
-
-button {
+/* Button styling for table actions */
+.btn {
     margin-right: 5px;
-    padding: 5px 10px;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-    background-color: #42b983;
 }
 
-button:last-of-type {
-    background-color: #5045b1;
+/* Tabel styling adjustments */
+.table {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.table th, .table td {
+    text-align: left;
+}
+
+.table-light th {
+    background-color: #f2f2f2;
 }
 </style>

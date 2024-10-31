@@ -1,20 +1,32 @@
 <template>
-  <div class="item-card">
-    <h3>{{ item.name }}</h3>
-    <p>{{ item.deskripsi }}</p>
-    <p class="stock">Stok: {{ item.stok }}</p>
-    <div class="buttons">
-      <button @click="$emit('edit-item', item)" class="edit">Edit</button>
-      <button @click="$emit('delete-item', item.kode)" class="delete">
-        Delete
-      </button>
-    </div>
+  <div class="item-table">
+    <table>
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Deskripsi</th>
+          <th>Stok</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-label="Nama">{{ item.name }}</td>
+          <td data-label="Deskripsi">{{ item.deskripsi }}</td>
+          <td data-label="Stok" class="stock">{{ item.stok }}</td>
+          <td data-label="Aksi">
+            <button @click="$emit('edit-item', item)" class="edit">Edit</button>
+            <button @click="$emit('delete-item', item.kode)" class="delete">Delete</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 
 <script>
 export default {
-  name: "ItemCard",
+  name: "ItemTable",
   props: {
     item: {
       type: Object,
@@ -25,60 +37,86 @@ export default {
 </script>
 
 <style scoped>
-.item-card {
-  width: 82%;
-  border: 1px solid #ddd;
-  padding: 16px;
+.item-table {
+  width: 100%;
+  overflow-x: auto;
   margin-bottom: 10px;
-  border-radius: 8px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: transform 0.2s, box-shadow 0.2s;
 }
-.item-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+
+table {
+  width: 100%;
+  border-collapse: collapse;
 }
-.item-card h3 {
-  margin: 0 0 10px;
-  font-size: 1.5em;
+
+th, td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+td[data-label]::before {
+  content: attr(data-label);
+  font-weight: bold;
   color: #333;
+  display: none;
 }
-.item-card p {
-  margin: 5px 0;
-  color: #555;
-}
-.item-card .stock {
+
+.stock {
   font-weight: bold;
   color: #2c3e50;
 }
-.item-card .buttons {
-  display: flex;
-  gap: 10px;
-  margin-top: 10px;
-}
-.item-card button {
-  padding: 10px 15px;
+
+button {
+  padding: 8px 12px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
+  margin-right: 5px;
 }
-.item-card button:hover {
-  background-color: #ddd;
-}
-.item-card button.edit {
+
+button.edit {
   background-color: #4caf50;
   color: white;
 }
-.item-card button.edit:hover {
+
+button.edit:hover {
   background-color: #45a049;
 }
-.item-card button.delete {
+
+button.delete {
   background-color: #e74c3c;
   color: white;
 }
-.item-card button.delete:hover {
+
+button.delete:hover {
   background-color: #c0392b;
+}
+
+/* Responsif untuk tampilan mobile */
+@media (max-width: 768px) {
+  table, thead, tbody, th, td, tr {
+    display: block;
+  }
+
+  th {
+    display: none;
+  }
+
+  td {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #ddd;
+  }
+
+  td[data-label]::before {
+    display: inline-block;
+  }
 }
 </style>
