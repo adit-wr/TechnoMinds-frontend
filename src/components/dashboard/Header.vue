@@ -41,8 +41,8 @@
           :value="currentRole"
           @change="$emit('update-role', $event.target.value)"
         >
-          <option value="user">User</option>
-          <option value="admin">Admin</option>
+          <option value="user">PH Operator</option>
+          <option value="admin">WH Operator</option>
         </select>
   
         <!-- User Profile -->

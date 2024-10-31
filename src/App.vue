@@ -45,7 +45,7 @@
       :modal-content="modalContent"
       @close="closeModal"
     />
-    <Footer />
+    <!-- <Footer /> -->
   </div>
 </template>
 
@@ -54,7 +54,7 @@ import Header from '@/components/dashboard/Header.vue'
 //import Transaction from './components/user/transaction/Transaction.vue'
 //import UserList from  './components/admin/user/UserList.vue'
 //import ItemList from './components/admin/item/ItemList.vue'
-import Footer from '@/components/dashboard/Footer.vue'
+//import Footer from '@/components/dashboard/Footer.vue'
 import Sidebar from '@/components/dashboard/Sidebar.vue'
 import AdminView from '@/views/AdminView.vue'
 import UserView from '@/views/UserView.vue'
@@ -64,7 +64,7 @@ export default {
   name: 'App',
   components: {
     Header,
-    Footer,
+    //Footer,
     Sidebar,
     //UserList,
     //ItemList,
@@ -76,7 +76,7 @@ export default {
   data() {
     return {
       currentRole: 'user',
-      currentComponent: 'items',
+      currentComponent: 'home',
       isSidebarVisible: true,
       items: [
         { code: "1", name: "Printer", description: "Ini adalah printer Canon", stock: 10 },
@@ -94,7 +94,7 @@ export default {
   methods: {
     handleRoleUpdate(role) {
       this.currentRole = role;
-      this.currentComponent = role === 'admin' ? 'users' : 'items';
+      this.currentComponent = role === 'admin' ? 'home' : 'home';
       console.log('Role changed to:', role);
     },
     toggleSidebar() {

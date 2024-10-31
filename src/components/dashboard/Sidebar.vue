@@ -5,61 +5,96 @@
     <div v-if="currentRole === 'admin'" class="menu-list">
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'user' }"
-        @click="$emit('show-component', 'users')"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
       >
-        <i class="fas fa-users"></i>
-        <span>Kelola User</span>
+        <i class="bi bi-house-door"></i>
+        <span>Home</span>
       </div>
-      
-      <div 
-        class="menu-item"
-        :class="{ active: currentComponent === 'item' }"
-        @click="$emit('show-component', 'items')"
-      >
-        <i class="fas fa-box"></i>
-        <span>Kelola Barang</span>
-      </div>
-      
-      <div 
-        class="menu-item"
-        :class="{ active: currentComponent === 'transactions' }"
-        @click="$emit('show-component', 'transactions')"
-      >
-        <i class="fas fa-exchange-alt"></i>
-        <span>Transaksi</span>
-      </div>
-      
-      
-    </div>
-
-    <!-- Menu untuk User -->
-    <div v-else class="menu-list">
       <div 
         class="menu-item"
         :class="{ active: currentComponent === 'items' }"
         @click="$emit('show-component', 'items')"
       >
         <i class="fas fa-box"></i>
-        <span>Daftar Barang</span>
+        <span>Master Data Barang</span>
       </div>
-      
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'transactions' }"
-        @click="$emit('show-component', 'transactions')"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
+      >
+        <i class="bi bi-envelope-arrow-down-fill"></i>
+        <span>SPK Masuk</span>
+      </div> 
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
       >
         <i class="fas fa-exchange-alt"></i>
-        <span>Transaksi</span>
+        <span>Riwayat SPK</span>
+      </div>
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
+      </div>
+    </div>
+
+    <!-- Menu untuk User -->
+    <div v-else class="menu-list">
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
+      >
+        <i class="bi bi-house-door"></i>
+        <span>Home</span>
+      </div>
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === 'items' }"
+        @click="$emit('show-component', 'items')"
+      >
+        <i class="fas fa-box"></i>
+        <span>Master Data Barang</span>
+      </div>
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
+      >
+        <i class="bi bi-person-circle"></i>
+        <span>Daftar WH Operator</span>
+      </div>
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
+      >
+        <i class="fas fa-exchange-alt"></i>
+        <span>Pengajuan SPK</span>
       </div>
       
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'history' }"
-        @click="$emit('show-component', 'history')"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
       >
         <i class="fas fa-history"></i>
-        <span>Riwayat</span>
+        <span>Riwayat SPK</span>
+      </div>
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
+      >
+        <i class="bi bi-box-arrow-right"></i>
+        <span>Logout</span>
       </div>
     </div>
   </aside>
