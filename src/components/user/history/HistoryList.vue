@@ -1,25 +1,28 @@
 <template>
   <div class="history-list">
-    <h2>Riwayat Peminjaman</h2>
+    <h2>Riwayat Pengajuan SPK</h2>
+    <button @click="print" class="btn btn-primary">
+        <i class="bi bi-printer"></i> Cetak Laporan
+    </button>
     <div class="table-responsive">
       <table>
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nama Barang</th>
-            <th>Jumlah Pinjam</th>
-            <th>Tanggal Pinjam</th>
-            <th>Tanggal Kembali</th>
+            <th>Nama Karyawan</th>
+            <th>Tanggal Pengajuan</th>
+            <th>SPK</th>
             <th>Status</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="history in histories" :key="history.id">
             <td>{{ history.id }}</td>
-            <td>{{ history.namaBarang }}</td>
-            <td>{{ history.jumlahPinjam }}</td>
-            <td>{{ history.tanggalPinjam }}</td>
-            <td>{{ history.tanggalKembali }}</td>
+            <td>{{ history.namaKaryawan }}</td>
+            <td>{{ history.tanggalPengajuan }}</td>
+            <td>
+              <a :href="history.spkLink" target="_blank">Unduh SPK</a>
+            </td>
             <td :class="['status', history.status.toLowerCase()]">
               {{ history.status }}
             </td>
@@ -38,57 +41,52 @@ export default {
       histories: [
         {
           id: 1,
-          namaBarang: "Acer Nitro 15 AN515-58",
-          jumlahPinjam: 1,
-          tanggalPinjam: "2023-05-01",
-          tanggalKembali: "2023-05-10",
-          status: "selesai",
+          namaKaryawan: "Doni Monardo",
+          tanggalPengajuan: "2024-01-01",
+          spkLink: "/path/to/spk1.pdf",
+          status: "done",
         },
         {
           id: 2,
-          namaBarang: "Lenovo LOQ 15 15IRH8",
-          jumlahPinjam: 2,
-          tanggalPinjam: "2023-06-15",
-          tanggalKembali: "2023-06-20",
-          status: "diproses",
+          namaKaryawan: "Doni Monardo",
+          tanggalPengajuan: "2024-01-02",
+          spkLink: "/path/to/spk2.pdf",
+          status: "done",
         },
         {
           id: 3,
-          namaBarang: "Tas Sekolah",
-          jumlahPinjam: 2,
-          tanggalPinjam: "2023-06-15",
-          tanggalKembali: "2023-06-20",
-          status: "diproses",
+          namaKaryawan: "Doni Monardo",
+          tanggalPengajuan: "2024-01-03",
+          spkLink: "/path/to/spk3.pdf",
+          status: "done",
         },
         {
           id: 4,
-          namaBarang: "Printer ",
-          jumlahPinjam: 2,
-          tanggalPinjam: "2023-06-15",
-          tanggalKembali: "2023-06-20",
-          status: "dipinjam",
+          namaKaryawan: "Doni Monardo",
+          tanggalPengajuan: "2024-01-04",
+          spkLink: "/path/to/spk4.pdf",
+          status: "done",
         },
         {
           id: 5,
-          namaBarang: "Monitor",
-          jumlahPinjam: 2,
-          tanggalPinjam: "2023-06-15",
-          tanggalKembali: "2023-06-20",
-          status: "diproses",
+          namaKaryawan: "Doni Monardo",
+          tanggalPengajuan: "2024-01-05",
+          spkLink: "/path/to/spk5.pdf",
+          status: "done",
         },
         {
           id: 6,
-          namaBarang: "Keyboard Hurung",
-          jumlahPinjam: 2,
-          tanggalPinjam: "2023-06-15",
-          tanggalKembali: "2023-06-20",
-          status: "diproses",
+          namaKaryawan: "Doni Monardo",
+          tanggalPengajuan: "2024-01-06",
+          spkLink: "/path/to/spk6.pdf",
+          status: "done",
         },
       ],
     };
   },
 };
 </script>
+
 <style scoped>
 .history-list {
   width: 82%;
@@ -116,7 +114,6 @@ td {
   padding: 12px 15px;
   text-align: left;
 }
-
 th {
   background-color: #b6b6b6;
   color: rgb(73, 72, 72);
@@ -141,10 +138,7 @@ tr:hover {
   border-radius: 4px;
   text-align: center;
 }
-.status.diproses {
-  background-color: #f0ad4e;
-}
-.status.selesai {
+.status.done {
   background-color: #5cb85c;
 }
 </style>

@@ -5,11 +5,19 @@
     <div v-if="currentRole === 'admin'" class="menu-list">
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
+        :class="{ active: currentComponent === 'HomeAdmin' }"
+        @click="$emit('show-component', 'HomeAdmin')"
       >
         <i class="bi bi-house-door"></i>
         <span>Home</span>
+      </div>
+      <div 
+        class="menu-item"
+        :class="{ active: currentComponent === 'ProfileWh' }"
+        @click="$emit('show-component', 'ProfileWh')"
+      >
+        <i class="bi bi-person-badge-fill"></i>
+        <span>Profile</span>
       </div>
       <div 
         class="menu-item"
@@ -21,20 +29,21 @@
       </div>
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
+        :class="{ active: currentComponent === 'transactions' }"
+        @click="$emit('show-component', 'transactions')"
       >
         <i class="bi bi-envelope-arrow-down-fill"></i>
         <span>SPK Masuk</span>
       </div> 
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
-      >
+        :class="{ active: currentComponent === 'riwayat' }"
+        @click="$emit('show-component', 'riwayat')"
+    >
         <i class="fas fa-exchange-alt"></i>
         <span>Riwayat SPK</span>
-      </div>
+    </div>
+
       <div 
         class="menu-item"
         :class="{ active: currentComponent === '' }"
@@ -49,8 +58,8 @@
     <div v-else class="menu-list">
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
+        :class="{ active: currentComponent === 'HomeUser' }"
+        @click="$emit('show-component', 'HomeUser')"
       >
         <i class="bi bi-house-door"></i>
         <span>Home</span>
@@ -65,16 +74,8 @@
       </div>
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
-      >
-        <i class="bi bi-person-circle"></i>
-        <span>Daftar WH Operator</span>
-      </div>
-      <div 
-        class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
+        :class="{ active: currentComponent === 'PengajuanSpk' }"
+        @click="$emit('show-component', 'PengajuanSpk')"
       >
         <i class="fas fa-exchange-alt"></i>
         <span>Pengajuan SPK</span>
@@ -82,8 +83,8 @@
       
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === '' }"
-        @click="$emit('show-component', '')"
+        :class="{ active: currentComponent === 'history' }"
+        @click="$emit('show-component', 'history')"
       >
         <i class="fas fa-history"></i>
         <span>Riwayat SPK</span>

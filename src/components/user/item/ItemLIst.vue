@@ -54,8 +54,6 @@ export default {
                 { id: 6, name: 'Bahan Pelapis', deskripsi: 'Bahan untuk pelapisan kain', stok: 250, price: 'Rp 200.000' },
                 { id: 7, name: 'Furnitur Mesin Jahit', deskripsi: 'Peralatan untuk memproduksi pakaian', stok: 20, price: 'Rp 15.000.000' },
                 { id: 8, name: 'Pita Pengukur', deskripsi: 'Alat untuk mengukur ukuran kain', stok: 50, price: 'Rp 15.000' },
-                { id: 9, name: 'Benang Jahit', deskripsi: 'Benang untuk mesin jahit', stok: 1000, price: 'Rp 10.000' },
-                { id: 10, name: 'Kain Non-Woven', deskripsi: 'Kain untuk produk tas dan kemasan', stok: 150, price: 'Rp 300.000' },
             ],
             showForm: false,
             selectedItem: null,

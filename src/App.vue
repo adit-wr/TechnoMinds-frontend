@@ -51,10 +51,6 @@
 
 <script>
 import Header from '@/components/dashboard/Header.vue'
-//import Transaction from './components/user/transaction/Transaction.vue'
-//import UserList from  './components/admin/user/UserList.vue'
-//import ItemList from './components/admin/item/ItemList.vue'
-//import Footer from '@/components/dashboard/Footer.vue'
 import Sidebar from '@/components/dashboard/Sidebar.vue'
 import AdminView from '@/views/AdminView.vue'
 import UserView from '@/views/UserView.vue'
@@ -64,13 +60,9 @@ export default {
   name: 'App',
   components: {
     Header,
-    //Footer,
     Sidebar,
-    //UserList,
-    //ItemList,
     AdminView,
     UserView,
-    //Transaction,
     Modal
   },
   data() {

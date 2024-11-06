@@ -2,14 +2,18 @@
 <script>
 import ItemList from '@/components/user/item/ItemList.vue'  
 import Transaction from '@/components/user/transaction/Transaction.vue'  
+import PengajuanSpk from '@/components/user/transaction/PengajuanSpk.vue'  
 import HistoryList from '@/components/user/history/HistoryList.vue'
+//import HomeUser from '/components/user/home/HomeUser.vue'
 
 export default {
   name: 'UserView',
   components: {
     ItemList,
     Transaction,
-    HistoryList
+    PengajuanSpk,
+    HistoryList,
+    //HomeUser
   },
   props: {
     currentComponent: {
@@ -22,6 +26,14 @@ export default {
 
 <template>
   <div class="user-view">
+    <!-- Tampilan Home
+    <div v-if="currentComponent === 'HomeUser'">
+      <div class="component-container">
+        <HomeUser />
+      </div>
+    </div>
+     -->
+
     <!-- Tampilan Item -->
     <div v-if="currentComponent === 'items'">
       <div class="component-container">
@@ -40,6 +52,13 @@ export default {
     <div v-if="currentComponent === 'history'">
       <div class="component-container">
         <HistoryList />
+      </div>
+    </div>
+
+    <!-- PengajuanSpk -->
+    <div v-if="currentComponent === 'PengajuanSpk'">
+      <div class="component-container">
+        <PengajuanSpk />
       </div>
     </div>
   </div>

@@ -3,14 +3,21 @@
 import ItemList from '@/components/admin/item/ItemList.vue'
 import ItemForm from '@/components/admin/item/ItemForm.vue'
 import Transaction from '../components/admin/transaction/Transaction.vue'
+import Riwayat from '../components/admin/transaction/Riwayat.vue'
 import UserList from '@/components/user/user/UserList.vue'  
+import ProfileWh from '@/components/admin/user/ProfileWh.vue'
+//import HomeAdmin from '../components/admin/home/HomeAdmin.vue'
+
 export default {
   name: 'AdminView',
   components: {
+    //HomeAdmin,
     ItemList,
     ItemForm,
+    ProfileWh,
+    Riwayat,
     Transaction,
-    UserList  
+    UserList 
   },
   data() {
     return {
@@ -27,6 +34,12 @@ export default {
       type: Array,
       required: true
     },
+    
+    //HomeAdmin: {
+      //type: Array,
+      //required: true
+    //},
+    
     showItemForm: {
       type: Boolean,
       required: true
@@ -61,6 +74,14 @@ export default {
 
 <template>
   <div class="admin-view">
+    <!-- Home 
+    <div v-if="currentComponent === 'HomeAdmin'">
+      <div class="component-container">
+        <HomeAdmin />
+      </div>
+    </div>
+    -->
+
     <!-- Users Management -->
     <div v-if="currentComponent === 'users'">
       <div class="component-container">
@@ -96,6 +117,21 @@ export default {
         <Transaction />
       </div>
     </div>
+
+    <!-- Riwayat Transaksi -->
+    <div v-if="currentComponent === 'riwayat'">
+      <div class="component-container">
+        <Riwayat />
+      </div>
+    </div>
+    
+     <!-- profileWh -->
+    <div v-if="currentComponent === 'ProfileWh'">
+      <div class="component-container">
+        <ProfileWh />
+      </div>
+    </div>
+
   </div>
 </template>
 

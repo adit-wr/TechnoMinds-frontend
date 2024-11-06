@@ -2,34 +2,35 @@
     <div class="item-list">
         <div class="card">
             <div class="card-header d-flex justify-content-between align-items-center">
-                <h2>Daftar Master Data Barang</h2>
-                <button @click="showAddForm" class="btn btn-primary">
-                    <i class="bi bi-clipboard2-plus"></i> Tambah Item
+                <h2>Daftar Riwayat SPK Masuk</h2>
+                <button @click="print" class="btn btn-primary">
+                    <i class="bi bi-printer"></i> Cetak Laporan
                 </button>
             </div>
             <div class="card-body">
                 <table class="table table-bordered table-striped">
                     <thead>
                         <tr>
-                            <th>Nama</th>
-                            <th>Deskripsi</th>
-                            <th>Stok</th>
-                            <th>Harga</th>
+                            <th>No</th>
+                            <th>Nama Karyawan</th>
+                            <th>Tanggal Pengajuan</th>
+                            <th>Status</th>
+                            <th>SPK</th>
                             <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="item in items" :key="item.id">
+                        <tr v-for="(item, index) in riwayat" :key="item.id">
+                            <td>{{ index + 1 }}</td>
                             <td>{{ item.name }}</td>
-                            <td>{{ item.deskripsi }}</td>
-                            <td>{{ item.stok }}</td>
-                            <td>{{ item.price }}</td>
+                            <td>{{ item.tanggal }}</td>
+                            <td>{{ item.status }}</td>
+                            <td>
+                                <a :href="item.pdfLink" target="_blank">Unduh PDF</a>
+                            </td>
                             <td>
                                 <button @click="editItem(item)" class="btn btn-warning btn-sm">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </button>
-                                <button @click="deleteItem(item.id)" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash3"></i> Delete
+                                    <i class="bi bi-pencil-square"></i> Detail
                                 </button>
                             </td>
                         </tr>
@@ -50,23 +51,21 @@
 
 <script>
 import Modal from '@/components/Modal.vue';
-import ItemForm from './ItemForm.vue';
 
 export default {
     components: {
-        ItemForm,
-        Modal
+        Modal,
     },
     data() {
         return {
-            items: [
-                { id: 1, name: 'Benang Poliéster', deskripsi: 'Benang berkualitas tinggi untuk menjahit', stok: 500, price: 'Rp 100.000' },
-                { id: 2, name: 'Kain Katun', deskripsi: 'Kain katun untuk pembuatan pakaian', stok: 200, price: 'Rp 250.000' },
-                { id: 3, name: 'Kain Spandex', deskripsi: 'Kain elastis untuk pakaian olahraga', stok: 150, price: 'Rp 300.000' },
-                { id: 4, name: 'Kain Satin', deskripsi: 'Kain satin untuk busana formal', stok: 100, price: 'Rp 500.000' },
-                { id: 5, name: 'Dye (Pewarna)', deskripsi: 'Pewarna tekstil untuk memberikan warna pada kain', stok: 300, price: 'Rp 50.000' },
-                { id: 6, name: 'Bahan Pelapis', deskripsi: 'Bahan untuk pelapisan kain', stok: 250, price: 'Rp 200.000' },
-                { id: 7, name: 'Furnitur Mesin Jahit', deskripsi: 'Peralatan untuk memproduksi pakaian', stok: 20, price: 'Rp 15.000.000' },
+            riwayat: [
+                { id: 1, name: 'Benang Poliéster', tanggal: '2024-01-01', status: 'done', pdfLink: '/path/to/pdf1.pdf' },
+                { id: 2, name: 'Kain Katun', tanggal: '2024-01-02', status: 'done', pdfLink: '/path/to/pdf2.pdf' },
+                { id: 3, name: 'Kain Spandex', tanggal: '2024-01-03', status: 'done', pdfLink: '/path/to/pdf3.pdf' },
+                { id: 4, name: 'Kain Satin', tanggal: '2024-01-04', status: 'done', pdfLink: '/path/to/pdf4.pdf' },
+                { id: 5, name: 'Dye (Pewarna)', tanggal: '2024-01-05', status: 'done', pdfLink: '/path/to/pdf5.pdf' },
+                { id: 6, name: 'Bahan Pelapis', tanggal: '2024-01-06', status: 'done', pdfLink: '/path/to/pdf6.pdf' },
+                { id: 7, name: 'Furnitur Mesin Jahit', tanggal: '2024-01-07', status: 'done', pdfLink: '/path/to/pdf7.pdf' },
                 
             ],
             showForm: false,
@@ -76,7 +75,7 @@ export default {
     },
     methods: {
         showAddForm() {
-            this.selectedItem = { id: "", name: "", deskripsi: "", stok: "", price: "" };
+            this.selectedItem = { id: "", name: "", tanggal: "", status: "done", pdfLink: "" };
             this.isEdit = false;
             this.showForm = true;
         },
@@ -87,13 +86,13 @@ export default {
         },
         handleSubmit(item) {
             if (this.isEdit) {
-                const index = this.items.findIndex((i) => i.id === item.id);
+                const index = this.riwayat.findIndex((i) => i.id === item.id);
                 if (index !== -1) {
-                    this.items.splice(index, 1, item);
+                    this.riwayat.splice(index, 1, item);
                 }
             } else {
                 item.id = Date.now(); // Assign unique ID for new items
-                this.items.push(item);
+                this.riwayat.push(item);
             }
             this.showForm = false;
             this.selectedItem = null;
@@ -105,16 +104,17 @@ export default {
             this.selectedItem = null;
         },
         deleteItem(id) {
-            this.items = this.items.filter(item => item.id !== id);
+            this.riwayat = this.riwayat.filter(item => item.id !== id);
         }
     }
 };
 </script>
 
 <style scoped>
-.item-list{
-    width:82%;
+.item-list {
+    width: 82%;
 }
+
 /* Tabel styling */
 .table {
     width: 100%;
