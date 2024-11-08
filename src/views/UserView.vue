@@ -4,7 +4,7 @@ import ItemList from '@/components/user/item/ItemList.vue'
 import Transaction from '@/components/user/transaction/Transaction.vue'  
 import PengajuanSpk from '@/components/user/transaction/PengajuanSpk.vue'  
 import HistoryList from '@/components/user/history/HistoryList.vue'
-//import HomeUser from '/components/user/home/HomeUser.vue'
+//import HomeUser from '@/components/user/home/HomeUser.vue'
 
 export default {
   name: 'UserView',

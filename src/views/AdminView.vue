@@ -6,7 +6,7 @@ import Transaction from '../components/admin/transaction/Transaction.vue'
 import Riwayat from '../components/admin/transaction/Riwayat.vue'
 import UserList from '@/components/user/user/UserList.vue'  
 import ProfileWh from '@/components/admin/user/ProfileWh.vue'
-//import HomeAdmin from '../components/admin/home/HomeAdmin.vue'
+//import HomeAdmin from '@/components/admin/home/HomeAdmin.vue'
 
 export default {
   name: 'AdminView',
@@ -35,10 +35,10 @@ export default {
       required: true
     },
     
-    //HomeAdmin: {
-      //type: Array,
-      //required: true
-    //},
+    HomeAdmin: {
+      type: Array,
+      required: true
+    },
     
     showItemForm: {
       type: Boolean,

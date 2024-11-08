@@ -5,8 +5,8 @@
     <div v-if="currentRole === 'admin'" class="menu-list">
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'HomeAdmin' }"
-        @click="$emit('show-component', 'HomeAdmin')"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
       >
         <i class="bi bi-house-door"></i>
         <span>Home</span>
@@ -58,8 +58,8 @@
     <div v-else class="menu-list">
       <div 
         class="menu-item"
-        :class="{ active: currentComponent === 'HomeUser' }"
-        @click="$emit('show-component', 'HomeUser')"
+        :class="{ active: currentComponent === '' }"
+        @click="$emit('show-component', '')"
       >
         <i class="bi bi-house-door"></i>
         <span>Home</span>
