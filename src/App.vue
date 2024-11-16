@@ -6,17 +6,16 @@
       @toggle-sidebar="toggleSidebar"
       :isSidebarVisible="isSidebarVisible"
     />
-
     <div class="app-content">
       <Sidebar
         :currentRole="currentRole"
         :isSidebarVisible="isSidebarVisible"
         @showComponent="navigateTo"
       />
-
       <div class="main-content" :class="{ expanded: isSidebarVisible }">
         <router-view
           :key="$route.fullPath"
+          :currentComponent="$route.params.component"
         />
       </div>
     </div>
@@ -26,7 +25,9 @@
 <script>
 import Header from "./components/dashboard/Header.vue";
 import Sidebar from "./components/dashboard/Sidebar.vue";
-import EventBus from "./utils/EventBus"; 
+import AdminView from "./views/AdminView.vue";
+import UserView from "./views/UserView.vue";
+import EventBus from "./utils/EventBus";
 
 export default {
   components: {
@@ -80,17 +81,11 @@ export default {
   },
 
   mounted() {
-    // Pastikan EventBus.on tersedia sebelum digunakan
-    if (EventBus && typeof EventBus.on === 'function') {
-      EventBus.on("search", this.handleSearch);
-    }
+    EventBus.on("search", this.handleSearch);
   },
 
   beforeUnmount() {
-    // Pastikan EventBus.off tersedia sebelum digunakan
-    if (EventBus && typeof EventBus.off === 'function') {
-      EventBus.off("search", this.handleSearch);
-    }
+    EventBus.off("search", this.handleSearch);
   },
 };
 </script>
@@ -98,36 +93,22 @@ export default {
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
   color: #2c3e50;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
 }
-.main-content {
-  padding: 90px 20px 20px;
-  background-color: #f8f9fa;
-  flex: 1;
-  transition: margin-left 0.3s ease;
+
+nav {
+  padding: 30px;
 }
-.content-expanded {
-  margin-left: 0;
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
 }
-.sidebar-visible {
-  margin-left: 250px;
-}
-@media (max-width: 768px) {
-  .main-content.sidebar-visible {
-    margin-left: 200px;
-  }
-}
-@media (max-width: 576px) {
-  .main-content {
-    padding: 90px 10px 20px;
-  }
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+
+nav a.router-link-exact-active {
+  color: #42b983;
 }
 </style>

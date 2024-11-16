@@ -1,123 +1,125 @@
 <template>
-    <div class="item-list">
-        <div class="card">
-            <div class="card-header d-flex justify-content-between align-items-center">
-                <h2>Daftar Master Data Barang</h2>
-                <button @click="showAddForm" class="btn btn-primary">
-                    <i class="bi bi-clipboard2-plus"></i> Tambah Item
-                </button>
-            </div>
-            <div class="card-body">
-                <table class="table table-bordered table-striped">
-                    <thead>
-                        <tr>
-                            <th>Nama</th>
-                            <th>Deskripsi</th>
-                            <th>Stok</th>
-                            <th>Harga</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr v-for="item in items" :key="item.id">
-                            <td>{{ item.name }}</td>
-                            <td>{{ item.deskripsi }}</td>
-                            <td>{{ item.stok }}</td>
-                            <td>{{ item.price }}</td>
-                            <td>
-                                <button @click="editItem(item)" class="btn btn-warning btn-sm">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </button>
-                                <button @click="deleteItem(item.id)" class="btn btn-danger btn-sm">
-                                    <i class="bi bi-trash3"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <Modal :visible="showForm" @close="cancelEditForm">
-            <ItemForm
-                :item="selectedItem"
-                :isEdit="isEdit"
-                @submit="handleSubmit"
-                @cancel="cancelEditForm"
-            />
-        </Modal>
+  <div class="item-list container py-4">
+    <div class="header d-flex justify-content-between align-items-center mb-3">
+      <h2>Daftar Barang</h2>
+
+      <button class="btn btn-primary" @click="showAddForm">
+        <i class="bi bi-clipboard-plus-fill"></i> Tambah Item
+      </button>
     </div>
+
+    <div class="item-cards row">
+      <ItemCard
+        v-for="item in filteredItems"
+        :key="item.code"
+        :itemCode="item.code"
+        :item="item"
+        @edit-item="editItem"
+        @delete-item="handleDelete(item.code)" 
+        class="col-md-3 col-lg-4"
+      />
+    </div>
+
+    <Modal :visible="showForm" @close="cancelEditForm">
+      <ItemForm
+        :item="selectedItem"
+        :isEdit="isEdit"
+        @submit="handleSubmit"
+        @cancel="cancelEditForm"
+      />
+    </Modal>
+  </div>
 </template>
 
 <script>
-import Modal from '@/components/Modal.vue';
-import ItemForm from './ItemForm.vue';
+import { useItemStore } from "@/store/itemStore";
+import ItemCard from "@/components/admin/item/ItemCard.vue";
+import Modal from "@/components/Modal.vue";
+import ItemForm from "@/components/admin/item/ItemForm.vue";
+import EventBus from "@/utils/EventBus";
 
 export default {
-    components: {
-        ItemForm,
-        Modal
+  components: {
+    ItemCard,
+    Modal,
+    ItemForm,
+  },
+  data() {
+    return {
+      showForm: false,
+      selectedItem: null,
+      isEdit: false,
+      searchQuery: "",
+    };
+  },
+  computed: {
+    items() {
+      return this.itemStore.items || [];
     },
-    data() {
-        return {
-            items: [
-                { id: 1, name: 'Benang Poliéster', deskripsi: 'Benang berkualitas tinggi untuk menjahit', stok: 500, price: 'Rp 100.000' },
-                { id: 2, name: 'Kain Katun', deskripsi: 'Kain katun untuk pembuatan pakaian', stok: 200, price: 'Rp 250.000' },
-                { id: 3, name: 'Kain Spandex', deskripsi: 'Kain elastis untuk pakaian olahraga', stok: 150, price: 'Rp 300.000' },
-                { id: 4, name: 'Kain Satin', deskripsi: 'Kain satin untuk busana formal', stok: 100, price: 'Rp 500.000' },
-                { id: 5, name: 'Dye (Pewarna)', deskripsi: 'Pewarna tekstil untuk memberikan warna pada kain', stok: 300, price: 'Rp 50.000' },
-                { id: 6, name: 'Bahan Pelapis', deskripsi: 'Bahan untuk pelapisan kain', stok: 250, price: 'Rp 200.000' },
-                { id: 7, name: 'Furnitur Mesin Jahit', deskripsi: 'Peralatan untuk memproduksi pakaian', stok: 20, price: 'Rp 15.000.000' },
-                
-            ],
-            showForm: false,
-            selectedItem: null,
-            isEdit: false
-        };
+    filteredItems() {
+      return this.items.filter((item) => {
+        const code = item.code ? String(item.code).toLowerCase() : "";
+        const name = item.name ? item.name.toLowerCase() : "";
+        const query = this.searchQuery ? this.searchQuery.toLowerCase() : "";
+        return code.includes(query) || name.includes(query);
+      });
     },
-    methods: {
-        showAddForm() {
-            this.selectedItem = { id: "", name: "", deskripsi: "", stok: "", price: "" };
-            this.isEdit = false;
-            this.showForm = true;
-        },
-        editItem(item) {
-            this.selectedItem = { ...item };
-            this.isEdit = true;
-            this.showForm = true;
-        },
-        handleSubmit(item) {
-            if (this.isEdit) {
-                const index = this.items.findIndex((i) => i.id === item.id);
-                if (index !== -1) {
-                    this.items.splice(index, 1, item);
-                }
-            } else {
-                item.id = Date.now(); // Assign unique ID for new items
-                this.items.push(item);
-            }
-            this.showForm = false;
-            this.selectedItem = null;
-            this.isEdit = false;
-        },
-        cancelEditForm() {
-            this.showForm = false;
-            this.isEdit = false;
-            this.selectedItem = null;
-        },
-        deleteItem(id) {
-            this.items = this.items.filter(item => item.id !== id);
-        }
-    }
+  },
+  methods: {
+    showAddForm() {
+      this.selectedItem = { code: "", name: "", description: "", stock: "" };
+      this.isEdit = false;
+      this.showForm = true;
+    },
+    editItem(item) {
+      this.selectedItem = { ...item };
+      this.isEdit = true;
+      this.showForm = true;
+    },
+    handleSubmit(item) {
+      if (this.isEdit) {
+        this.itemStore.updateItem(item); // Update item jika sedang dalam mode edit
+      } else {
+        this.itemStore.addItem(item); // Tambah item baru
+      }
+      this.showForm = false;
+    },
+    cancelEditForm() {
+      this.showForm = false;
+    },
+    handleDelete(itemCode) {
+      // Menghapus item berdasarkan kode yang dikirimkan
+      this.itemStore.deleteItem(itemCode);
+    },
+    handleSearch(query) {
+      this.searchQuery = query;
+    },
+  },
+  mounted() {
+    EventBus.on("search", this.handleSearch);
+  },
+  beforeUnmount() {
+    EventBus.off("search", this.handleSearch);
+  },
+  setup() {
+    const itemStore = useItemStore();
+    return { itemStore };
+  },
 };
 </script>
 
 <style scoped>
-.item-list{
-    width:82%;
+.item-list {
+  background-color: white;
+  border-radius: 8px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-/* Tabel styling */
-.table {
-    width: 100%;
-    margin-top: 20px;
+.header h2 {
+  color: rgb(192, 199, 199);
+  font-size: 24px;
+}
+.container.py-4 {
+  width: 70%;
 }
 </style>

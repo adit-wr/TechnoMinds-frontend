@@ -2,8 +2,8 @@
 <script>
 import ItemList from '@/components/admin/item/ItemList.vue'
 import ItemForm from '@/components/admin/item/ItemForm.vue'
-import Transaction from '../components/admin/transaction/Transaction.vue'
-import Riwayat from '../components/admin/transaction/Riwayat.vue'
+import Transaction from '@/components/admin/transaction/Transaction.vue'
+import Riwayat from '@/components/admin/transaction/Riwayat.vue'
 import UserList from '@/components/user/user/UserList.vue'  
 import ProfileWh from '@/components/admin/user/ProfileWh.vue'
 //import HomeAdmin from '@/components/admin/home/HomeAdmin.vue'

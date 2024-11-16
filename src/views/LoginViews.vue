@@ -73,7 +73,7 @@ select {
 button {
   width: 100%;
   padding: 10px;
-  background-color: #4caf50;
+  background-color: blue;
   color: white;
   border: none;
   border-radius: 4px;

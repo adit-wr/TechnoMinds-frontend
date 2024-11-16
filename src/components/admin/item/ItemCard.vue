@@ -1,122 +1,78 @@
 <template>
-  <div class="item-table">
-    <table>
-      <thead>
-        <tr>
-          <th>Nama</th>
-          <th>Deskripsi</th>
-          <th>Stok</th>
-          <th>Aksi</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td data-label="Nama">{{ item.name }}</td>
-          <td data-label="Deskripsi">{{ item.deskripsi }}</td>
-          <td data-label="Stok" class="stock">{{ item.stok }}</td>
-          <td data-label="Aksi">
-            <button @click="$emit('edit-item', item)" class="edit">Edit</button>
-            <button @click="$emit('delete-item', item.kode)" class="delete">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
+  <div class="item-card card mb-3">
+    <div class="card-body">
+      <h3 class="card-title">{{ item.name }}</h3>
+      <p class="card-text">{{ item.description }}</p>
+      <p class="card-text stock">Stok: {{ item.stock }}</p>
+      <div class="buttons d-flex gap-2 mt-3">
+        <button @click="editItem" class="btn btn-success edit">
+          <i class="bi bi-pencil-square"></i> Edit
+        </button>
+        <button
+          @click="confirmDelete"
+          class="btn btn-danger delete"
+          :disabled="item.stock === 0"
+        >
+          <i class="bi bi-trash3"></i> Delete
+        </button>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import { useItemStore } from "@/store/itemStore"; 
+
 export default {
-  name: "ItemTable",
+  name: "ItemCard",
   props: {
-    item: {
-      type: Object,
-      required: true,
+    itemCode: {
+      type: String,
+      required: true, // Mengambil code item dari parent
+    },
+  },
+  computed: {
+    // Mengambil item berdasarkan code dari store
+    item() {
+      const store = useItemStore(); // Mengakses store
+      return store.items.find(item => item.code === this.itemCode) || {}; // Menemukan item berdasarkan code
+    },
+  },
+  methods: {
+    editItem() {
+      this.$emit("edit-item", this.item);
+    },
+    confirmDelete() {
+      if (confirm("Apakah Anda yakin ingin menghapus item ini?")) {
+        this.$emit("delete-item", this.item.code);
+      }
     },
   },
 };
 </script>
 
 <style scoped>
-.item-table {
-  width: 100%;
-  overflow-x: auto;
-  margin-bottom: 10px;
+.item-card {
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-
-table {
-  width: 100%;
-  border-collapse: collapse;
+.item-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-
-th, td {
-  padding: 12px;
-  text-align: left;
-  border-bottom: 1px solid #ddd;
-}
-
-th {
-  background-color: #f2f2f2;
-  font-weight: bold;
-}
-
-td[data-label]::before {
-  content: attr(data-label);
-  font-weight: bold;
+.item-card .card-title {
+  margin: 0 0 10px;
+  font-size: 1.25rem;
   color: #333;
-  display: none;
 }
-
-.stock {
+.item-card .card-text {
+  margin: 5px 0;
+  color: #555;
+}
+.item-card .stock {
   font-weight: bold;
   color: #2c3e50;
 }
-
-button {
-  padding: 8px 12px;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
+.item-card button {
   transition: background-color 0.2s;
-  margin-right: 5px;
-}
-
-button.edit {
-  background-color: #4caf50;
-  color: white;
-}
-
-button.edit:hover {
-  background-color: #45a049;
-}
-
-button.delete {
-  background-color: #e74c3c;
-  color: white;
-}
-
-button.delete:hover {
-  background-color: #c0392b;
-}
-
-/* Responsif untuk tampilan mobile */
-@media (max-width: 768px) {
-  table, thead, tbody, th, td, tr {
-    display: block;
-  }
-
-  th {
-    display: none;
-  }
-
-  td {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 0;
-    border-bottom: 1px solid #ddd;
-  }
-
-  td[data-label]::before {
-    display: inline-block;
-  }
 }
 </style>

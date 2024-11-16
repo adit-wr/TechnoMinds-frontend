@@ -1,12 +1,12 @@
 <template>
   <header class="header">
     <div class="header-left">
-      <!-- Toggle Sidebar Button -->
+    <!-- Toggle Sidebar Button -->
       <button class="menu-button" @click="$emit('toggle-sidebar')">
         <i class="fas fa-bars"></i>
       </button>
 
-      <!-- Logo/Brand -->
+    <!-- Logo/Brand -->
       <h1 class="brand">TechnoMinds</h1>
     </div>
 
@@ -28,7 +28,7 @@
     </div>
 
     <div class="header-right">
-      <!-- Role Selector -->
+    <!-- Role Selector -->
       <select
         class="role-select"
         :value="currentRole"
@@ -38,7 +38,7 @@
         <option value="admin">WH Operator</option>
       </select>
 
-      <!-- User Profile -->
+    <!-- User Profile -->
       <div class="user-profile">
         <i class="fas fa-user"></i>
       </div>

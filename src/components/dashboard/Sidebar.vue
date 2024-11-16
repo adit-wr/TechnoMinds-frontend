@@ -39,10 +39,10 @@
         class="menu-item"
         :class="{ active: currentComponent === 'riwayat' }"
         @click="$emit('show-component', 'riwayat')"
-    >
+      >
         <i class="fas fa-exchange-alt"></i>
         <span>Riwayat SPK</span>
-    </div>
+      </div>
 
       <div 
         class="menu-item"
@@ -111,6 +111,10 @@ export default {
     },
     isSidebarVisible: {
       type: Boolean,
+      required: true
+    },
+    currentComponent: {
+      type: String,
       required: true
     }
   },
