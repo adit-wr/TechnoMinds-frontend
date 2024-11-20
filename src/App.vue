@@ -1,18 +1,25 @@
 <template>
   <div id="app">
     <Header
+      v-if="showHeader"
       :currentRole="currentRole"
       @update-role="updateRole"
       @toggle-sidebar="toggleSidebar"
       :isSidebarVisible="isSidebarVisible"
     />
-    <div class="app-content">
+
+    <div class="app-content" :class="{ noHeader: !showHeader }">
       <Sidebar
+        v-if="showSidebar"
         :currentRole="currentRole"
         :isSidebarVisible="isSidebarVisible"
         @showComponent="navigateTo"
       />
-      <div class="main-content" :class="{ expanded: isSidebarVisible }">
+
+      <div
+        class="main-content"
+        :class="{ expanded: isSidebarVisible && showSidebar }"
+      >
         <router-view
           :key="$route.fullPath"
           :currentComponent="$route.params.component"
@@ -25,8 +32,6 @@
 <script>
 import Header from "./components/dashboard/Header.vue";
 import Sidebar from "./components/dashboard/Sidebar.vue";
-import AdminView from "./views/AdminView.vue";
-import UserView from "./views/UserView.vue";
 import EventBus from "./utils/EventBus";
 
 export default {
@@ -43,26 +48,35 @@ export default {
     };
   },
 
+  computed: {
+    showHeader() {
+      return !this.$route.meta.hideHeader;
+    },
+
+    showSidebar() {
+      return !this.$route.meta.hideSidebar;
+    },
+  },
+
   watch: {
     "$route.name"(newRole) {
       this.currentRole = newRole;
     },
   },
 
-  computed: {
-    currentView() {
-      return this.currentRole === "admin" ? AdminView : UserView;
-    },
-  },
-
   methods: {
     updateRole(role) {
       this.currentRole = role;
-      this.navigateTo("items");
     },
 
     navigateTo(component) {
-      this.$router.push({ name: this.currentRole, params: { component } });
+      if (this.currentRole === "ADMIN") {
+        this.$router.push({ name: "admin", params: { component } });
+      } else if (this.currentRole === "USER") {
+        this.$router.push({ name: "user" });
+      } else {
+        this.$router.push({ name: "login" });
+      }
     },
 
     toggleSidebar() {
@@ -90,25 +104,3 @@ export default {
 };
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-</style>

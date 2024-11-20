@@ -118,7 +118,11 @@ export default {
       required: true
     }
   },
-  emits: ['show-component']
+   methods: {
+    showComponent(component) {
+      this.$router.push({name: this.currentRole,params: {component}});
+    },
+  },
 }
 </script>
 
