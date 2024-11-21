@@ -104,6 +104,7 @@ export default {
         // Menangkap error dari server
         this.error = error.message || "Registration failed. Please try again.";
         console.error("Registration Failed", error);
+        alert("Registration Failed");
       }
     },
   },
